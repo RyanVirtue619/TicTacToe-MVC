@@ -80,6 +80,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jButton1.setFocusable(false);
+        jButton1.setName("00"); // NOI18N
         jButton1.setPreferredSize(new java.awt.Dimension(75, 75));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -88,6 +89,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         });
 
         jButton2.setFocusable(false);
+        jButton2.setName("01"); // NOI18N
         jButton2.setPreferredSize(new java.awt.Dimension(75, 75));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -96,6 +98,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         });
 
         jButton3.setFocusable(false);
+        jButton3.setName("02"); // NOI18N
         jButton3.setPreferredSize(new java.awt.Dimension(75, 75));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -104,6 +107,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         });
 
         jButton4.setFocusable(false);
+        jButton4.setName("10"); // NOI18N
         jButton4.setPreferredSize(new java.awt.Dimension(75, 75));
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,6 +116,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         });
 
         jButton5.setFocusable(false);
+        jButton5.setName("11"); // NOI18N
         jButton5.setPreferredSize(new java.awt.Dimension(75, 75));
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -120,6 +125,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         });
 
         jButton6.setFocusable(false);
+        jButton6.setName("12"); // NOI18N
         jButton6.setPreferredSize(new java.awt.Dimension(75, 75));
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -128,6 +134,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         });
 
         jButton7.setFocusable(false);
+        jButton7.setName("20"); // NOI18N
         jButton7.setPreferredSize(new java.awt.Dimension(75, 75));
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -136,6 +143,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         });
 
         jButton8.setFocusable(false);
+        jButton8.setName("21"); // NOI18N
         jButton8.setPreferredSize(new java.awt.Dimension(75, 75));
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -144,6 +152,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         });
 
         jButton9.setFocusable(false);
+        jButton9.setName("22"); // NOI18N
         jButton9.setPreferredSize(new java.awt.Dimension(75, 75));
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -215,7 +224,8 @@ public class View extends javax.swing.JFrame implements MessageHandler {
 
     private void onClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onClick
 		 JButton button = (JButton)evt.getSource();
-		this.mvcMessaging.notify("playerMove", button.getName());
+		 System.out.println(button.getName());
+		this.mvcMessaging.notify("playerMove",  button.getName());
     }//GEN-LAST:event_onClick
 
 

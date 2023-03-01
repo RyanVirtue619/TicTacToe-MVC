@@ -23,7 +23,7 @@ public class Model implements MessageHandler {
 	 *   local messages between Model, View, and controller
 	*/
 	 public Model(Messenger messages) {
-		 mvcMessaging = new Messenger();
+		 mvcMessaging = messages;
 		 this.board = new String[3][3];
 	 }
 
@@ -49,8 +49,34 @@ public class Model implements MessageHandler {
 		this.gameOver = false;
 	}
 
+	private String isWinner() {
+		boolean draw = true;
+			// Check the rows and columns for a tic tac toe     
+			for (int i=0; i<3; i++) {
+				if (board[i][0].equals(board[i][1]) && board[i][0].equals(board[i][2]) && !board[i][0].equals(""))
+					return board[i][0];
+				if (board[0][i].equals(board[1][i]) && board[0][i].equals(board[2][i]) && !board[0][i].equals(""))
+					return board[0][i];
+			}
+
+			// Check the diagonals
+			if (board[0][0].equals(board[1][1]) && board[0][0].equals(board[2][2]))
+				return board[0][0];
+			if (board[0][2].equals(board[1][1]) && board[0][2].equals(board[2][0]))
+				return board[0][2];
+
+		for (String[] board1 : board) {
+			for (int j = 0; j < board.length; j++) {
+				if (board1[j].equals("")) {
+					draw = false;
+				}
+			}
+		}
+		// If we haven't found it, then return a blank string
+		return (draw) ? "draw" : "";
+	}
   
-	  @Override
+	@Override
 	public void messageHandler(String messageName, Object messagePayload) {
 		// Display the message to the console for debugging
 		if (messagePayload != null) {
@@ -61,7 +87,6 @@ public class Model implements MessageHandler {
 
 		// playerMove message handler
 		if (messageName.equals("playerMove")) {
-			System.out.println("got the bag");
 			// Get the position string and convert to row and col
 			String position = (String)messagePayload;
 			Integer row = Integer.valueOf(position.substring(0,1));
@@ -77,6 +102,7 @@ public class Model implements MessageHandler {
 				// Send the boardChange message along with the new board 
 				this.mvcMessaging.notify("boardChange", this.board);
 			}
+			whoseMove ^= true;
 
 		// newGame message handler
 		} else if (messageName.equals("newGame")) {
