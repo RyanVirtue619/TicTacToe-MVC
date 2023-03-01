@@ -11,50 +11,58 @@ import javax.swing.JButton;
  */
 public class View extends javax.swing.JFrame implements MessageHandler {
 
-  private final Messenger mvcMessaging;
+    private final Messenger mvcMessaging;
+    private boolean gameOver;
+
+    /**
+     * Creates a new view
+     * @param messages mvcMessaging object
+     */
+    public View(Messenger messages) {
+        mvcMessaging = messages;   // Save the calling controller instance
+        initComponents();           // Create and init the GUI components
+    }
+
+    /**
+     * Initialize the model here and subscribe
+     * to any required messages
+     */
+    public void init() {
+        this.mvcMessaging.subscribe("boardChange", this);
+        this.mvcMessaging.subscribe("gameOver", this);
+        this.mvcMessaging.subscribe("turnChange", this);
+        gameOver = false;
+    }
   
-  /**
-   * Creates a new view
-   * @param messages mvcMessaging object
-   */
-  public View(Messenger messages) {
-    mvcMessaging = messages;   // Save the calling controller instance
-    initComponents();           // Create and init the GUI components
-  }
-  
-  /**
-   * Initialize the model here and subscribe
-   * to any required messages
-   */
-  public void init() {
-	this.mvcMessaging.subscribe("boardChange", this);
-	this.mvcMessaging.subscribe("gameOver", this);
-  }
-  
-	@Override
-	public void messageHandler(String messageName, Object messagePayload) {
-		if (messagePayload != null) {
-			System.out.println("MSG: received by view: "+messageName+" | "+messagePayload.toString());
-		} else {
-			System.out.println("MSG: received by view: "+messageName+" | No data sent");
-		}
-		
-		if (messageName.equals("boardChange")) {
-			// Get the message payload and cast it as a 2D string array since we
-			// know that the model is sending out the board data with the message
-			String[][] board = (String[][])messagePayload;
-			// Now set the button text with the contents of the board
-			jButton1.setText(board[0][0]);
-			jButton2.setText(board[0][1]);
-			jButton3.setText(board[0][2]);
-			jButton4.setText(board[1][0]);
-			jButton5.setText(board[1][1]);
-			jButton6.setText(board[1][2]);
-			jButton7.setText(board[2][0]);
-			jButton8.setText(board[2][1]);
-			jButton9.setText(board[2][2]);
-		}
-	}
+    @Override
+    public void messageHandler(String messageName, Object messagePayload) {
+            if (messagePayload != null) {
+                    System.out.println("MSG: received by view: "+messageName+" | "+messagePayload.toString());
+            } else {
+                    System.out.println("MSG: received by view: "+messageName+" | No data sent");
+            }
+
+            if (messageName.equals("boardChange") && !gameOver) {
+                    // Get the message payload and cast it as a 2D string array since we
+                    // know that the model is sending out the board data with the message
+                    String[][] board = (String[][])messagePayload;
+                    // Now set the button text with the contents of the board
+                    jButton1.setText(board[0][0]);
+                    jButton2.setText(board[0][1]);
+                    jButton3.setText(board[0][2]);
+                    jButton4.setText(board[1][0]);
+                    jButton5.setText(board[1][1]);
+                    jButton6.setText(board[1][2]);
+                    jButton7.setText(board[2][0]);
+                    jButton8.setText(board[2][1]);
+                    jButton9.setText(board[2][2]);
+            } else if (messageName.equals("gameOver")) {
+                jLabel1.setText("Game over! " + (messagePayload.toString().equals("draw") ? ("It's a draw!") : (messagePayload.toString() + " Wins!")));
+                gameOver = true;
+            } else if (messageName.equals("turnChange")) {
+                jLabel1.setText((messagePayload.toString().equals("true") ? ("X to move") : ("O to move")));
+            }
+    }
 
 
   /**
@@ -76,9 +84,11 @@ public class View extends javax.swing.JFrame implements MessageHandler {
         jButton8 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jButton10 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jButton1.setFont(new java.awt.Font("Liberation Sans", 0, 36)); // NOI18N
         jButton1.setFocusable(false);
         jButton1.setName("00"); // NOI18N
         jButton1.setPreferredSize(new java.awt.Dimension(75, 75));
@@ -88,6 +98,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
             }
         });
 
+        jButton2.setFont(new java.awt.Font("Liberation Sans", 0, 36)); // NOI18N
         jButton2.setFocusable(false);
         jButton2.setName("01"); // NOI18N
         jButton2.setPreferredSize(new java.awt.Dimension(75, 75));
@@ -97,6 +108,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
             }
         });
 
+        jButton3.setFont(new java.awt.Font("Liberation Sans", 0, 36)); // NOI18N
         jButton3.setFocusable(false);
         jButton3.setName("02"); // NOI18N
         jButton3.setPreferredSize(new java.awt.Dimension(75, 75));
@@ -106,6 +118,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
             }
         });
 
+        jButton4.setFont(new java.awt.Font("Liberation Sans", 0, 36)); // NOI18N
         jButton4.setFocusable(false);
         jButton4.setName("10"); // NOI18N
         jButton4.setPreferredSize(new java.awt.Dimension(75, 75));
@@ -115,6 +128,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
             }
         });
 
+        jButton5.setFont(new java.awt.Font("Liberation Sans", 0, 36)); // NOI18N
         jButton5.setFocusable(false);
         jButton5.setName("11"); // NOI18N
         jButton5.setPreferredSize(new java.awt.Dimension(75, 75));
@@ -124,6 +138,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
             }
         });
 
+        jButton6.setFont(new java.awt.Font("Liberation Sans", 0, 36)); // NOI18N
         jButton6.setFocusable(false);
         jButton6.setName("12"); // NOI18N
         jButton6.setPreferredSize(new java.awt.Dimension(75, 75));
@@ -133,6 +148,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
             }
         });
 
+        jButton7.setFont(new java.awt.Font("Liberation Sans", 0, 36)); // NOI18N
         jButton7.setFocusable(false);
         jButton7.setName("20"); // NOI18N
         jButton7.setPreferredSize(new java.awt.Dimension(75, 75));
@@ -142,6 +158,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
             }
         });
 
+        jButton8.setFont(new java.awt.Font("Liberation Sans", 0, 36)); // NOI18N
         jButton8.setFocusable(false);
         jButton8.setName("21"); // NOI18N
         jButton8.setPreferredSize(new java.awt.Dimension(75, 75));
@@ -151,6 +168,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
             }
         });
 
+        jButton9.setFont(new java.awt.Font("Liberation Sans", 0, 36)); // NOI18N
         jButton9.setFocusable(false);
         jButton9.setName("22"); // NOI18N
         jButton9.setPreferredSize(new java.awt.Dimension(75, 75));
@@ -160,8 +178,17 @@ public class View extends javax.swing.JFrame implements MessageHandler {
             }
         });
 
-        jLabel1.setText("beans");
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("X to move");
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        jButton10.setText("New Game");
+        jButton10.setFocusable(false);
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -193,19 +220,23 @@ public class View extends javax.swing.JFrame implements MessageHandler {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(51, 51, 51))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(44, 44, 44)
+                .addGap(16, 16, 16)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addComponent(jButton10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -216,7 +247,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
                     .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         pack();
@@ -228,6 +259,11 @@ public class View extends javax.swing.JFrame implements MessageHandler {
 		this.mvcMessaging.notify("playerMove",  button.getName());
     }//GEN-LAST:event_onClick
 
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        this.gameOver = false;
+        this.mvcMessaging.notify("newGame");
+    }//GEN-LAST:event_jButton10ActionPerformed
+
 
   /**
    * @param args the command line arguments
@@ -235,6 +271,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

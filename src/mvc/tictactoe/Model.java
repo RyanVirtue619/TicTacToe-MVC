@@ -86,7 +86,7 @@ public class Model implements MessageHandler {
 		}
 
 		// playerMove message handler
-		if (messageName.equals("playerMove")) {
+		if (messageName.equals("playerMove") && !gameOver) {
 			// Get the position string and convert to row and col
 			String position = (String)messagePayload;
 			Integer row = Integer.valueOf(position.substring(0,1));
@@ -95,14 +95,20 @@ public class Model implements MessageHandler {
 			if (this.board[row][col].equals("")) {
 				// ... then set X or O depending on whose move it is
 				if (this.whoseMove) {
-					this.board[row][col] = "X";
-				} else {
 					this.board[row][col] = "O";
+				} else {
+					this.board[row][col] = "X";
 				}
 				// Send the boardChange message along with the new board 
 				this.mvcMessaging.notify("boardChange", this.board);
+                                this.mvcMessaging.notify("turnChange", this.whoseMove);
+                                whoseMove ^= true;
+                                if(!isWinner().equals("")) {
+                                    gameOver = true;
+                                    mvcMessaging.notify("gameOver", isWinner());
+                                }
 			}
-			whoseMove ^= true;
+			
 
 		// newGame message handler
 		} else if (messageName.equals("newGame")) {
